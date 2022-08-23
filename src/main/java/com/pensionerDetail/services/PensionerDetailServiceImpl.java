@@ -54,6 +54,7 @@ public class PensionerDetailServiceImpl implements PensionerDetailService {
 		LOGGER.info("Request to authenticate with token");
 		ResponseEntity<String> response = restTemplate.exchange(
 				authorizationHost + "/api/authorization-service/validate", HttpMethod.GET, request, String.class);
+		LOGGER.info("Request to authenticate with token");
 
 		String value = (String) response.getBody();
 
@@ -92,30 +93,32 @@ public class PensionerDetailServiceImpl implements PensionerDetailService {
 		// String.class);
 
 		LOGGER.info("Request to authenticate with token ");
+		/*
+		 * 
+		 * ResponseEntity<String> response = restTemplate.exchange( authorizationHost +
+		 * "/api/authorization-service/validate", HttpMethod.GET, request,
+		 * String.class);
+		 * 
+		 * String value = (String) response.getBody();
+		 * 
+		 * if (value.equalsIgnoreCase("Invalid")) {
+		 * 
+		 * LOGGER.info("Authentication failed!");
+		 * 
+		 * throw new BusinessException(400, "Invalid jwt"); }
+		 */
 
-		ResponseEntity<String> response = restTemplate.exchange(
-				authorizationHost + "/api/authorization-service/validate", HttpMethod.GET, request, String.class);
+		// else if (value.equalsIgnoreCase("valid")) {
 
-		String value = (String) response.getBody();
+		LOGGER.info("Authentication successful !");
 
-		if (value.equalsIgnoreCase("Invalid")) {
+		Pensioner pensioner = pensionerRepository.save(pd.getPensioner());
+		Bankdetail bankdetail = bankdetailRepository.save(pd.getBankdetail());
 
-			LOGGER.info("Authentication failed!");
+		pensionerDetail.setPensioner(pensioner);
+		pensionerDetail.setBankdetail(bankdetail);
 
-			throw new BusinessException(400, "Invalid jwt");
-		}
-
-		else if (value.equalsIgnoreCase("valid")) {
-
-			LOGGER.info("Authentication successful !");
-
-			Pensioner pensioner = pensionerRepository.save(pd.getPensioner());
-			Bankdetail bankdetail = bankdetailRepository.save(pd.getBankdetail());
-
-			pensionerDetail.setPensioner(pensioner);
-			pensionerDetail.setBankdetail(bankdetail);
-
-		}
+		// }
 
 		return pensionerDetail;
 	}

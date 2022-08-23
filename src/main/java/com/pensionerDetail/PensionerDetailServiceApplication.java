@@ -16,7 +16,6 @@ public class PensionerDetailServiceApplication {
 	}
 
 	@Bean
-	// @LoadBalanced
 	public RestTemplate restTemplate() {
 
 		return new RestTemplate();

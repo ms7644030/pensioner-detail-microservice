@@ -48,15 +48,17 @@ public class PensionerDetailServiceImpl implements PensionerDetailService {
 		headers.add("Authorization", header);
 		HttpEntity<String> request = new HttpEntity<String>(headers);
 
-		// ResponseEntity<String> response = restTemplate
-		// .getForEntity(authorizationHost + "/api/authorization-service/validate",
-		// String.class);
+		// TO VALIDATE JWT TOKEN
+
 		LOGGER.info("Request to authenticate with token");
+
 		ResponseEntity<String> response = restTemplate.exchange(
 				authorizationHost + "/api/authorization-service/validate", HttpMethod.GET, request, String.class);
 		LOGGER.info("Request to authenticate with token");
 
 		String value = (String) response.getBody();
+
+		// TOKEN VALIDATION FAILED
 
 		if (value.equalsIgnoreCase("Invalid")) {
 
@@ -64,6 +66,8 @@ public class PensionerDetailServiceImpl implements PensionerDetailService {
 
 			throw new BusinessException(400, "Invalid jwt");
 		}
+
+		// TOKEN VALIDATION SUCCESSFUL
 
 		else if (value.equalsIgnoreCase("valid")) {
 
@@ -88,16 +92,16 @@ public class PensionerDetailServiceImpl implements PensionerDetailService {
 		headers.add("Authorization", header);
 		HttpEntity<String> request = new HttpEntity<String>(headers);
 
-		// ResponseEntity<String> response = restTemplate
-		// .getForEntity(authorizationHost + "/api/authorization-service/validate",
-		// String.class);
+		// TO VALIDATE JWT TOKEN
 
-		LOGGER.info("Request to authenticate with token ");
+		LOGGER.info("Request for authentication ");
 
 		ResponseEntity<String> response = restTemplate.exchange(
 				authorizationHost + "/api/authorization-service/validate", HttpMethod.GET, request, String.class);
 
 		String value = (String) response.getBody();
+
+		// TOKEN VALIDATION FAILED
 
 		if (value.equalsIgnoreCase("Invalid")) {
 
@@ -105,6 +109,8 @@ public class PensionerDetailServiceImpl implements PensionerDetailService {
 
 			throw new BusinessException(400, "Invalid jwt");
 		}
+
+		// TOKEN VALIDATION SUCCESSFUL
 
 		else if (value.equalsIgnoreCase("valid")) {
 
@@ -124,66 +130,52 @@ public class PensionerDetailServiceImpl implements PensionerDetailService {
 	@Override
 	public List<PensionerDetail> getPensionersDetail(String header) {
 
-		LOGGER.info("**********************");
-
-		LOGGER.info(authorizationHost);
-
-		LOGGER.info("**********************");
-
-		LOGGER.info(header);
-
-		LOGGER.info("**********************");
-
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", header);
 		HttpEntity<String> request = new HttpEntity<String>(headers);
 
-		LOGGER.info(request.getBody());
-
-		LOGGER.info("**********************");
-
 		List<Pensioner> pensioners = new ArrayList<>();
 		List<PensionerDetail> pensionersDetail = new ArrayList<>();
 
-		// ResponseEntity<String> response = restTemplate
-		// .getForEntity(authorizationHost +
-		// "/api/authorization-service/validate",request, String.class);
+		// TO VALIDATE JWT TOKEN
 
-		// LOGGER.info("Request to authenticate with token");
+		LOGGER.info("Request to authenticate");
 
-		/*
-		 * ResponseEntity<String> response = restTemplate.exchange( authorizationHost +
-		 * "/api/authorization-service/validate", HttpMethod.GET, request,
-		 * String.class);
-		 * 
-		 * String value = (String) response.getBody();
-		 * 
-		 * if (value.equalsIgnoreCase("Invalid")) {
-		 * 
-		 * LOGGER.info("Authentication failed!");
-		 * 
-		 * throw new BusinessException(400, "Invalid jwt"); }
-		 */
+		ResponseEntity<String> response = restTemplate.exchange(
+				authorizationHost + "/api/authorization-service/validate", HttpMethod.GET, request, String.class);
 
-		// else if (value.equalsIgnoreCase("valid")) {
+		String value = (String) response.getBody();
 
-		LOGGER.info("Authentication successful !");
+		// TOKEN VALIDATION FAILED
 
-		pensioners = pensionerRepository.findAll();
+		if (value.equalsIgnoreCase("Invalid")) {
 
-		for (Pensioner pn : pensioners) {
+			LOGGER.info("Authentication failed!");
 
-			Bankdetail bankdetail = bankdetailRepository.findById(pn.getAadhaar_number()).get();
-			PensionerDetail pd = new PensionerDetail();
-
-			pd.setPensioner(pn);
-			pd.setBankdetail(bankdetail);
-
-			pensionersDetail.add(pd);
-
+			throw new BusinessException(400, "Invalid jwt");
 		}
 
-		// }
+		// TOKEN VALIDATION SUCCESSFUL
+
+		else if (value.equalsIgnoreCase("valid")) {
+
+			LOGGER.info("Authentication successful !");
+
+			pensioners = pensionerRepository.findAll();
+
+			for (Pensioner pn : pensioners) {
+
+				Bankdetail bankdetail = bankdetailRepository.findById(pn.getAadhaar_number()).get();
+				PensionerDetail pd = new PensionerDetail();
+
+				pd.setPensioner(pn);
+				pd.setBankdetail(bankdetail);
+
+				pensionersDetail.add(pd);
+
+			}
+
+		}
 
 		return pensionersDetail;
 	}

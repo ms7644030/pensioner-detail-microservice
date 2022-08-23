@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 //import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +21,7 @@ import com.pensionerDetail.entities.PensionerDetail;
 import com.pensionerDetail.services.PensionerDetailService;
 
 @RestController
-//@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 @RequestMapping("/pensionerDetail")
 public class PensionerDetailController {
 
@@ -28,6 +29,8 @@ public class PensionerDetailController {
 
 	@Autowired
 	private PensionerDetailService pensionerDetailService;
+
+	// TO RETRIEVE PENSIONER DETAIL BY AADHAAR NUMBER
 
 	@GetMapping("/{aadhar_number}")
 	public ResponseEntity<PensionerDetail> getPensionerDetail(@PathVariable("aadhar_number") Long aadhaar_number,
@@ -40,6 +43,8 @@ public class PensionerDetailController {
 		return new ResponseEntity<PensionerDetail>(pensionerDetail, HttpStatus.OK);
 	}
 
+	// TO SAVE PENSIONER DETAIL
+
 	@PostMapping("/save")
 	public PensionerDetail savePensionerDetail(@RequestBody PensionerDetail pensionerDetail,
 			@RequestHeader(value = "Authorization") String header) {
@@ -48,6 +53,8 @@ public class PensionerDetailController {
 
 		return pensionerDetailService.savePensionerDetail(pensionerDetail, header);
 	}
+
+	// TO RETRIEVE ALL PENSIONER'S DETAIL
 
 	@GetMapping("/all")
 	public ResponseEntity<List<PensionerDetail>> retrieveAllPensionerDetail(

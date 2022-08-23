@@ -42,16 +42,15 @@ public class InitialDataConfiguration {
 		// take the count of entities
 		long count = pensionerRepository.count();
 
-		// If count is Zero then take the data from CSV file and populate it.
+		// If count is Zero then take the data from CSV file and populate it in
+		// database.
 		if (count == 0) {
 
 			InputStream istream = getClass().getClassLoader().getResourceAsStream("PensionerDetail.csv");
 			CSVReader reader;
-			// CSVParser parser = new CSVParserBuilder().withSeparator('\t').build();
 
 			try {
-				// reader = new CSVReaderBuilder(new
-				// FileReader("D:\\pensionerDetail_service\\src\\main\\resources\\pensionerDetail.csv")).
+
 				reader = new CSVReaderBuilder(new InputStreamReader(istream)).withSkipLines(1).build();
 
 				List<String[]> allData = reader.readAll();

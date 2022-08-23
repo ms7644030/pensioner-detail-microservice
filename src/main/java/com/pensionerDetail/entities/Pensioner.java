@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 public class Pensioner {
-	
+
 	@Id
 	@Column(name = "AADHAAR_NUMBER")
 	private Long aadhaar_number;
@@ -35,5 +35,5 @@ public class Pensioner {
 	private double allowances;
 	@Column(name = "PENSION_TYPE")
 	private String selfOrFamily;
-	
+
 }

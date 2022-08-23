@@ -3,6 +3,8 @@ package com.pensionerDetail.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.pensionerDetail.controller.PensionerDetailController;
 import com.pensionerDetail.customException.BusinessException;
 import com.pensionerDetail.entities.Bankdetail;
 import com.pensionerDetail.entities.Pensioner;
@@ -21,6 +24,8 @@ import com.pensionerDetail.repository.PensionerRepo;
 
 @Service
 public class PensionerDetailServiceImpl implements PensionerDetailService {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(PensionerDetailController.class);
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -46,6 +51,7 @@ public class PensionerDetailServiceImpl implements PensionerDetailService {
 		// ResponseEntity<String> response = restTemplate
 		// .getForEntity(authorizationHost + "/api/authorization-service/validate",
 		// String.class);
+		LOGGER.info("Request to authenticate with token : ", header);
 		ResponseEntity<String> response = restTemplate.exchange(
 				authorizationHost + "/api/authorization-service/validate", HttpMethod.GET, request, String.class);
 
@@ -53,10 +59,14 @@ public class PensionerDetailServiceImpl implements PensionerDetailService {
 
 		if (value.equalsIgnoreCase("Invalid")) {
 
+			LOGGER.info("Authentication failed!");
+
 			throw new BusinessException(400, "Invalid jwt");
 		}
 
 		else if (value.equalsIgnoreCase("valid")) {
+
+			LOGGER.info("Authentication successful !");
 
 			Pensioner pensioner = pensionerRepository.findById(aadhaar).get();
 			Bankdetail bankdetail = bankdetailRepository.findById(aadhaar).get();
@@ -81,6 +91,8 @@ public class PensionerDetailServiceImpl implements PensionerDetailService {
 		// .getForEntity(authorizationHost + "/api/authorization-service/validate",
 		// String.class);
 
+		LOGGER.info("Request to authenticate with token : ", header);
+
 		ResponseEntity<String> response = restTemplate.exchange(
 				authorizationHost + "/api/authorization-service/validate", HttpMethod.GET, request, String.class);
 
@@ -88,10 +100,14 @@ public class PensionerDetailServiceImpl implements PensionerDetailService {
 
 		if (value.equalsIgnoreCase("Invalid")) {
 
+			LOGGER.info("Authentication failed!");
+
 			throw new BusinessException(400, "Invalid jwt");
 		}
 
 		else if (value.equalsIgnoreCase("valid")) {
+
+			LOGGER.info("Authentication successful !");
 
 			Pensioner pensioner = pensionerRepository.save(pd.getPensioner());
 			Bankdetail bankdetail = bankdetailRepository.save(pd.getBankdetail());
@@ -118,6 +134,8 @@ public class PensionerDetailServiceImpl implements PensionerDetailService {
 		// .getForEntity(authorizationHost +
 		// "/api/authorization-service/validate",request, String.class);
 
+		LOGGER.info("Request to authenticate with token : ", header);
+
 		ResponseEntity<String> response = restTemplate.exchange(
 				authorizationHost + "/api/authorization-service/validate", HttpMethod.GET, request, String.class);
 
@@ -125,10 +143,14 @@ public class PensionerDetailServiceImpl implements PensionerDetailService {
 
 		if (value.equalsIgnoreCase("Invalid")) {
 
+			LOGGER.info("Authentication failed!");
+
 			throw new BusinessException(400, "Invalid jwt");
 		}
 
 		else if (value.equalsIgnoreCase("valid")) {
+
+			LOGGER.info("Authentication successful !");
 
 			pensioners = pensionerRepository.findAll();
 

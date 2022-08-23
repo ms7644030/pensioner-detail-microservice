@@ -92,6 +92,8 @@ public class PensionerDetailServiceImpl implements PensionerDetailService {
 		// .getForEntity(authorizationHost + "/api/authorization-service/validate",
 		// String.class);
 
+		LOGGER.info(request.getBody());
+
 		LOGGER.info("Request to authenticate with token ");
 		/*
 		 * 

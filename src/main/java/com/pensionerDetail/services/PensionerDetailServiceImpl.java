@@ -92,58 +92,7 @@ public class PensionerDetailServiceImpl implements PensionerDetailService {
 		// .getForEntity(authorizationHost + "/api/authorization-service/validate",
 		// String.class);
 
-		LOGGER.info(request.getBody());
-
 		LOGGER.info("Request to authenticate with token ");
-		/*
-		 * 
-		 * ResponseEntity<String> response = restTemplate.exchange( authorizationHost +
-		 * "/api/authorization-service/validate", HttpMethod.GET, request,
-		 * String.class);
-		 * 
-		 * String value = (String) response.getBody();
-		 * 
-		 * if (value.equalsIgnoreCase("Invalid")) {
-		 * 
-		 * LOGGER.info("Authentication failed!");
-		 * 
-		 * throw new BusinessException(400, "Invalid jwt"); }
-		 */
-
-		// else if (value.equalsIgnoreCase("valid")) {
-
-		LOGGER.info("Authentication successful !");
-
-		Pensioner pensioner = pensionerRepository.save(pd.getPensioner());
-		Bankdetail bankdetail = bankdetailRepository.save(pd.getBankdetail());
-
-		pensionerDetail.setPensioner(pensioner);
-		pensionerDetail.setBankdetail(bankdetail);
-
-		// }
-
-		return pensionerDetail;
-	}
-
-	@Override
-	public List<PensionerDetail> getPensionersDetail(String header) {
-
-		LOGGER.info(authorizationHost);
-
-		LOGGER.info(header);
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", header);
-		HttpEntity<String> request = new HttpEntity<String>(headers);
-
-		List<Pensioner> pensioners = new ArrayList<>();
-		List<PensionerDetail> pensionersDetail = new ArrayList<>();
-
-		// ResponseEntity<String> response = restTemplate
-		// .getForEntity(authorizationHost +
-		// "/api/authorization-service/validate",request, String.class);
-
-		LOGGER.info("Request to authenticate with token");
 
 		ResponseEntity<String> response = restTemplate.exchange(
 				authorizationHost + "/api/authorization-service/validate", HttpMethod.GET, request, String.class);
@@ -161,21 +110,80 @@ public class PensionerDetailServiceImpl implements PensionerDetailService {
 
 			LOGGER.info("Authentication successful !");
 
-			pensioners = pensionerRepository.findAll();
+			Pensioner pensioner = pensionerRepository.save(pd.getPensioner());
+			Bankdetail bankdetail = bankdetailRepository.save(pd.getBankdetail());
 
-			for (Pensioner pn : pensioners) {
-
-				Bankdetail bankdetail = bankdetailRepository.findById(pn.getAadhaar_number()).get();
-				PensionerDetail pd = new PensionerDetail();
-
-				pd.setPensioner(pn);
-				pd.setBankdetail(bankdetail);
-
-				pensionersDetail.add(pd);
-
-			}
+			pensionerDetail.setPensioner(pensioner);
+			pensionerDetail.setBankdetail(bankdetail);
 
 		}
+
+		return pensionerDetail;
+	}
+
+	@Override
+	public List<PensionerDetail> getPensionersDetail(String header) {
+
+		LOGGER.info("**********************");
+
+		LOGGER.info(authorizationHost);
+
+		LOGGER.info("**********************");
+
+		LOGGER.info(header);
+
+		LOGGER.info("**********************");
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", header);
+		HttpEntity<String> request = new HttpEntity<String>(headers);
+
+		LOGGER.info(request.getBody());
+
+		LOGGER.info("**********************");
+
+		List<Pensioner> pensioners = new ArrayList<>();
+		List<PensionerDetail> pensionersDetail = new ArrayList<>();
+
+		// ResponseEntity<String> response = restTemplate
+		// .getForEntity(authorizationHost +
+		// "/api/authorization-service/validate",request, String.class);
+
+		// LOGGER.info("Request to authenticate with token");
+
+		/*
+		 * ResponseEntity<String> response = restTemplate.exchange( authorizationHost +
+		 * "/api/authorization-service/validate", HttpMethod.GET, request,
+		 * String.class);
+		 * 
+		 * String value = (String) response.getBody();
+		 * 
+		 * if (value.equalsIgnoreCase("Invalid")) {
+		 * 
+		 * LOGGER.info("Authentication failed!");
+		 * 
+		 * throw new BusinessException(400, "Invalid jwt"); }
+		 */
+
+		// else if (value.equalsIgnoreCase("valid")) {
+
+		LOGGER.info("Authentication successful !");
+
+		pensioners = pensionerRepository.findAll();
+
+		for (Pensioner pn : pensioners) {
+
+			Bankdetail bankdetail = bankdetailRepository.findById(pn.getAadhaar_number()).get();
+			PensionerDetail pd = new PensionerDetail();
+
+			pd.setPensioner(pn);
+			pd.setBankdetail(bankdetail);
+
+			pensionersDetail.add(pd);
+
+		}
+
+		// }
 
 		return pensionersDetail;
 	}

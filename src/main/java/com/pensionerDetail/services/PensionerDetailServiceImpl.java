@@ -51,7 +51,7 @@ public class PensionerDetailServiceImpl implements PensionerDetailService {
 		// ResponseEntity<String> response = restTemplate
 		// .getForEntity(authorizationHost + "/api/authorization-service/validate",
 		// String.class);
-		LOGGER.info("Request to authenticate with token : ", header);
+		LOGGER.info("Request to authenticate with token");
 		ResponseEntity<String> response = restTemplate.exchange(
 				authorizationHost + "/api/authorization-service/validate", HttpMethod.GET, request, String.class);
 
@@ -91,7 +91,7 @@ public class PensionerDetailServiceImpl implements PensionerDetailService {
 		// .getForEntity(authorizationHost + "/api/authorization-service/validate",
 		// String.class);
 
-		LOGGER.info("Request to authenticate with token : ", header);
+		LOGGER.info("Request to authenticate with token ");
 
 		ResponseEntity<String> response = restTemplate.exchange(
 				authorizationHost + "/api/authorization-service/validate", HttpMethod.GET, request, String.class);
@@ -123,6 +123,10 @@ public class PensionerDetailServiceImpl implements PensionerDetailService {
 	@Override
 	public List<PensionerDetail> getPensionersDetail(String header) {
 
+		LOGGER.info(authorizationHost);
+
+		LOGGER.info(header);
+
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", header);
 		HttpEntity<String> request = new HttpEntity<String>(headers);
@@ -134,7 +138,7 @@ public class PensionerDetailServiceImpl implements PensionerDetailService {
 		// .getForEntity(authorizationHost +
 		// "/api/authorization-service/validate",request, String.class);
 
-		LOGGER.info("Request to authenticate with token : ", header);
+		LOGGER.info("Request to authenticate with token");
 
 		ResponseEntity<String> response = restTemplate.exchange(
 				authorizationHost + "/api/authorization-service/validate", HttpMethod.GET, request, String.class);

@@ -1,12 +1,12 @@
 # pensioner-detail-microservice
 
-port = 9001
+* port = 9001
 
-#AWS ECS SERVICE CONFIGURATION
+# AWS ECS SERVICE CONFIGURATION
 
-path = /api/pensioner-detail-service/*
-health =/api/pensioner-detail-service/manage/health
+* path = /api/pensioner-detail-service/*
+* health =/api/pensioner-detail-service/manage/health
 
 # Container Config Environment Variable
 
-AUTHORIZATION_SERVICE_URI
+* AUTHORIZATION_SERVICE_URI
